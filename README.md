@@ -12,6 +12,7 @@ The GitLab installation consists of setting up the following components:
 3. GitLab shell
 4. Database
 5. GitLab
+6. Check Installation
 
 # 1. Packages / Dependencies
 
@@ -147,3 +148,156 @@ Try connecting to the new database with the new user
 if you see **'mysql>'**  you are success database setting
 
 # 5. GitLab
+
+#### Download Gitlab
+
+	cd /Users/git
+	sudo -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
+	cd gitlab
+	sudo -u git git checkout 6-3-stable
+
+#### Configuring GitLab
+
+	sudo -u git cp config/gitlab.yml.example config/gitlab.yml
+	
+edit gitlab.yml carefully 
+
+change **/usr/bin/git** => **/usr/local/bin/git**
+
+change **localhost**    => **domain.com**
+	
+
+Make sure GitLab can write to the `log/` and `tmp/` directories
+
+	sudo chown -R git log/
+	sudo chown -R git tmp/
+	sudo chmod -R u+rwX  log/
+	sudo chmod -R u+rwX  tmp/
+
+Create directories for repositories make sure GitLab can write to them
+
+	sudo -u git mkdir /home/git/repositories
+	sudo chmod -R u+rwX  /home/git/repositories/
+
+Create directory for satellites
+
+	sudo -u git mkdir /home/git/gitlab-satellites
+
+Create directories for sockets/pids and make sure GitLab can write to them
+
+	sudo -u git mkdir tmp/pids/
+	sudo -u git mkdir tmp/sockets/
+
+	sudo chmod -R u+rwX  tmp/pids/
+	sudo chmod -R u+rwX  tmp/sockets/
+
+Create public/uploads directory otherwise backup will fail
+
+	sudo -u git mkdir public/uploads
+	sudo chmod -R u+rwX  public/uploads
+
+Fix
+
+	sudo chown -R git:git /Users/git/repositories/
+	sudo chmod -R ug+rwX,o-rwx /Users/git/repositories/
+	sudo chmod -R ug-s /Users/git/repositories/
+	sudo find /home/git/repositories/ -type d -print0 | sudo xargs -0 chmod g+s
+
+Copy the example Unicorn config
+
+	sudo -u git cp config/unicorn.rb.example config/unicorn.rb
+
+
+Uncomment  `listen "/Users/git/gitlab/tmp/sockets/gitlab.socket", :backlog => 64` in `unicorn.rb`.
+
+Change Listen port to non-use port in `unicorn.rb`.
+
+Configure Git global settings for git user, useful when editing via web
+
+	sudo -u git -H git config --global user.name "GitLab"
+	sudo -u git -H git config --global user.email "gitlab@domain.com"
+
+Copy rack attack middleware config
+
+	sudo -u git -H cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
+
+Uncomment `config.middleware.use Rack::Attack` in `/Users/git/gitlab/config/application.rb`
+
+Set up logrotate
+	
+	sudo mkdir /etc/logrotate.d/
+	sudo cp lib/support/logrotate/gitlab /etc/logrotate.d/gitlab
+
+#### Gitlab Mysql Config
+
+	sudo -u git cp config/database.yml.mysql config/database.yml
+	
+Edit "secure password" to real password in config/database.yml
+
+#### Install Gems
+
+You need to edit `Gemfile.lock` (`sudo -u git vim Gemfile.lock`) and change the versions 
+
+change **libv8** to **3.16.14.3** (in two places), 
+
+change **therubyracer** to **0.12.0** 
+
+change **underscore-rails** to **1.5.2** (in two places). 
+
+You also need to edit `Gemfile` (`sudo -u git vim Gemfile`) 
+
+change **underscore-rails** to **1.5.2**.
+
+##### Install Bundlers
+
+	sudo gem install bundler
+	sudo gem install charlock_holmes --version '0.6.9.4'
+	sudo bundle install --deployment --without development test postgres aws
+
+#### Initialize Database and Activate Advanced Features
+
+	sudo -u git -H bash -l -c 'bundle exec rake gitlab:setup RAILS_ENV=production'
+
+Here is your admin login credentials:
+
+	login: admin@local.host
+	password: 5iveL!fe
+
+#### Install Init script
+
+	sudo cp lib/support/init.d/gitlab /usr/local/etc/rc.d/gitlab
+	sudo chmod +x /usr/local/etc/rc.d/gitlab
+	sudo /usr/local/etc/rc.d/gitlab start
+
+#6. Check Installation
+
+Check gitlab-shell
+
+	sudo -u git /Users/git/gitlab-shell/bin/check
+
+Double-check environment configuration
+
+	sudo -u git -H bash -l -c 'bundle exec rake gitlab:env:info RAILS_ENV=production'
+
+Do a thorough check. Make sure everything is green.
+
+	sudo -u git -H bash -l -c 'bundle exec rake gitlab:check RAILS_ENV=production'
+
+The script complained about the init script not being up-to-date, but I assume that’s because it was modified to use /Users instead of /home. You can safely ignore that warning.
+
+## TODO
+
+1. ldap
+2. hard fix for grit
+
+		.gsub(/^[^0-9a-zA-Z]{1}\[[0-9]{0,2}m/,"")
+		
+3. hard fix for startup sidkit
+
+		sudo -u git -H bundle exec rake sidekiq:start RAILS_ENV=production
+
+
+## Links and sources 
+
+-https://github.com/CiTroNaK/Installation-guide-for-GitLab-on-OS-X
+-https://github.com/gitlab-freebsd/gitlabhq/blob/freebsd/doc/install/installation.md
