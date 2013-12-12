@@ -105,11 +105,11 @@ with something like 'http://domain.com/'
 
 edit and make sure that is pointing to **/usr/local/bin/redis-cli**
 
-		su -m git -c "vim config.yml"
+		sudo -u git -H vim config.yml
 
 Do setup
 
-		su -m git -c ./bin/install
+		sudo -u git -H ./bin/install
 
 # 4. Database
 
