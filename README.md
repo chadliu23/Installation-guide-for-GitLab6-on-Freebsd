@@ -115,7 +115,7 @@ Do setup
 
 Now login in mysql
 
-		mysql -u root -pPASSWORD    # if first time mysql -u root -p
+		mysql -u root -pPASSWORD    # if first time: mysql -u root -p
 
 Set a password on the anonymous accounts use. (change $password to a real password)
 
@@ -145,7 +145,7 @@ Try connecting to the new database with the new user
 
 		sudo -u git -H mysql -u gitlab -pPASSWORD_HERE -D gitlabhq_production
 
-if you see **'mysql>'**  you are success database setting
+if you see **'mysql>'**  you are success database setting, quit with `\q`
 
 # 5. GitLab
 
