@@ -1,7 +1,7 @@
 Installation-guide-for-GitLab6-on-Freebsd
 =========================================
 
-This installation guide was create for and tested on **Freebsd 8.3. 
+This installation guide was create for and tested on **Freebsd 8.3**. 
 his is **NOT** the official installation guide to set up a production server since upstream doesnt support **FreeBSD**. To set up a **development installation** or for many other installation options please consult [the installation section in the readme](https://github.com/gitlabhq/gitlabhq#installation).
 # Overview
 
@@ -15,7 +15,7 @@ The GitLab installation consists of setting up the following components:
 
 # 1. Packages / Dependencies
 
-install using ports 
+install using **ports** 
 
 1. devel/git 
 
@@ -69,8 +69,8 @@ install using ports
 		
 11. mysql 
 
-    sudo cd /usr/ports/databases/mysql55-server && make install clean
-    echo "mysql_enable=YES" >> /etc/rc.conf
+		sudo cd /usr/ports/databases/mysql55-server && make install clean
+		echo "mysql_enable=YES" >> /etc/rc.conf
 
 12. Ruby
 
@@ -82,10 +82,10 @@ install using ports
 
 # 2. System Users
 
-		Create a `git` user and group for Gitlab:
+Create a `git` user and group for Gitlab:
 
-    sudo pw addgroup git
-    sudo pw adduser git -g git -m -d /home/git -c "GitLab"
+		sudo pw addgroup git
+		sudo pw adduser git -g git -m -d /home/git -c "GitLab"
 
 # 3. GitLab shell
 
@@ -96,15 +96,19 @@ GitLab Shell is a ssh access and repository management software developed specia
 		cd gitlab-shell
 		sudo -u git git checkout v1.7.9
 		sudo -u git cp config.yml.example config.yml
-    cd gitlab-shell
+		cd gitlab-shell
 		
-    # Edit config and replace gitlab_url
-    # with something like 'http://domain.com/'
-    # edit and make sure that is pointing to /usr/local/bin/redis-cli
-    su -m git -c "vim config.yml"
+Edit config and replace **gitlab_url**
 
-    # Do setup
-    su -m git -c ./bin/install
+with something like 'http://domain.com/'
+
+edit and make sure that is pointing to **/usr/local/bin/redis-cli**
+
+		su -m git -c "vim config.yml"
+
+Do setup
+
+		su -m git -c ./bin/install
 
 # 4. Database
 
@@ -112,11 +116,11 @@ Now login in mysql
 
 		mysql -u root -pPASSWORD    # if first time mysql -u root -p
 
-# Set a password on the anonymous accounts use. (change $password to a real password)
+Set a password on the anonymous accounts use. (change $password to a real password)
 
 		mysql> SET PASSWORD FOR ''@'localhost' = PASSWORD('$password');
 
-# Set a password for the root account. (change $password to a real password)
+Set a password for the root account. (change $password to a real password)
 
 		mysql> SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$password');
 
@@ -140,6 +144,6 @@ Try connecting to the new database with the new user
 
 		sudo -u git -H mysql -u gitlab -pPASSWORD_HERE -D gitlabhq_production
 
-if you see 'mysql>'  you are success database setting
+if you see **'mysql>'**  you are success database setting
 
 # 5. GitLab
