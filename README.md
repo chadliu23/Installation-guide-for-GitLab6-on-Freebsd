@@ -300,4 +300,5 @@ The script complained about the init script not being up-to-date, but I assume t
 ## Links and sources 
 
 -https://github.com/CiTroNaK/Installation-guide-for-GitLab-on-OS-X
+
 -https://github.com/gitlab-freebsd/gitlabhq/blob/freebsd/doc/install/installation.md
