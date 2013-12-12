@@ -12,7 +12,8 @@ The GitLab installation consists of setting up the following components:
 3. GitLab shell
 4. Database
 5. GitLab
-6. Check Installation
+6. Apache Setup
+7. Check Installation
 
 # 1. Packages / Dependencies
 
@@ -272,7 +273,39 @@ Make GitLab start on boot:
 
 	echo "gitlab_enable="YES"" >> /etc/rc.conf
 
-#6. Check Installation
+#6.  Apache Setup
+
+Install Apache 
+
+Install Passenger 
+
+	sudo gem install passenger
+	sudo passenger-install-apache2-module
+
+Edit apache httpd.conf in usr/local/etc/apache22/httpd.conf
+
+	LoadModule passenger_module /usr/local/lib/ruby/gems/1.9/gems/passenger-4.0.26/buildout/apache2/mod_passenger.so
+	PassengerRoot /usr/local/lib/ruby/gems/1.9/gems/passenger-4.0.26
+	PassengerDefaultRuby /usr/local/bin/ruby19
+	
+make sure the files are in the right place
+
+for gitlab apache setting
+
+	<VirtualHost *:80>
+		DocumentRoot /home/git/gitlab/public
+		RailsBaseURI /
+		<Directory /home/git/gitlab/public>
+     			Allow from all
+     			Options -MultiViews	
+		</Directory>
+	</VirtualHost>
+
+Finally, restart Apache: 
+
+	sudo /usr/local/etc/rc.d/apache22 restart
+
+#7. Check Installation
 
 Check gitlab-shell
 
