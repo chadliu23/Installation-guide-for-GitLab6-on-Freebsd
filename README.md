@@ -321,10 +321,22 @@ Do a thorough check. Make sure everything is green.
 
 The script complained about the init script not being up-to-date don't worry. 
 
+
+# ldap setting
+
+	ldap:
+	enabled: true
+	host: 'localhost'
+	base: 'dc=chadliu23,dc=org'
+	port: 389
+	uid: 'uid'
+	method: 'plain' # "ssl" or "plain"
+	bind_dn: 'for_bindaccunt'
+	password: 'PASSWORD'
+	allow_username_or_email_login: true
+	
 ## TODO
 
-1. ldap
-2. apache
 2. hard fix for grit
 
 		.gsub(/^[^0-9a-zA-Z]{1}\[[0-9]{0,2}m/,"")
