@@ -210,7 +210,7 @@ Copy the example Unicorn config
 
 Uncomment  `listen "/Users/git/gitlab/tmp/sockets/gitlab.socket", :backlog => 64` in `unicorn.rb`.
 
-Change Listen port to non-use port in `unicorn.rb`.
+Change Listen port (127.0.0.1:8080) to **non-use** port in `unicorn.rb`.
 
 Configure Git global settings for git user, useful when editing via web
 
@@ -265,9 +265,13 @@ Here is your admin login credentials:
 
 #### Install Init script
 
-	sudo cp lib/support/init.d/gitlab /usr/local/etc/rc.d/gitlab
+	sudo cp /home/git/gitlab/lib/support/init.d/gitlab /usr/local/etc/rc.d/gitlab
 	sudo chmod +x /usr/local/etc/rc.d/gitlab
 	sudo /usr/local/etc/rc.d/gitlab start
+	
+Make GitLab start on boot:
+
+	echo "gitlab_enable="YES"" >> /etc/rc.conf
 
 #6. Check Installation
 
@@ -283,11 +287,12 @@ Do a thorough check. Make sure everything is green.
 
 	sudo -u git -H bash -l -c 'bundle exec rake gitlab:check RAILS_ENV=production'
 
-The script complained about the init script not being up-to-date, but I assume that’s because it was modified to use /Users instead of /home. You can safely ignore that warning.
+The script complained about the init script not being up-to-date don't worry. 
 
 ## TODO
 
 1. ldap
+2. apache
 2. hard fix for grit
 
 		.gsub(/^[^0-9a-zA-Z]{1}\[[0-9]{0,2}m/,"")
