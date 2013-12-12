@@ -160,7 +160,7 @@ if you see **'mysql>'**  you are success database setting, quit with `\q`
 
 	sudo -u git cp config/gitlab.yml.example config/gitlab.yml
 	
-edit gitlab.yml carefully 
+##### edit gitlab.yml carefully and make sure all the setting to match your setup.
 
 change **/usr/bin/git** => **/usr/local/bin/git**
 
@@ -187,7 +187,6 @@ Create directories for sockets/pids and make sure GitLab can write to them
 
 	sudo -u git mkdir tmp/pids/
 	sudo -u git mkdir tmp/sockets/
-
 	sudo chmod -R u+rwX  tmp/pids/
 	sudo chmod -R u+rwX  tmp/sockets/
 
@@ -232,7 +231,7 @@ Set up logrotate
 
 	sudo -u git cp config/database.yml.mysql config/database.yml
 	
-Edit "secure password" to real password in config/database.yml
+##### Edit "secure password" to real password in config/database.yml
 
 #### Install Gems
 
