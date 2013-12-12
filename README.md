@@ -335,15 +335,24 @@ The script complained about the init script not being up-to-date don't worry.
 	password: 'PASSWORD'
 	allow_username_or_email_login: true
 	
-## TODO
+## Troubleshooting
 
-2. hard fix for grit
+1. if you add a new project but error message "repository no found"
+	
+it is your sidkit didn't start up
 
-		.gsub(/^[^0-9a-zA-Z]{1}\[[0-9]{0,2}m/,"")
-		
-3. hard fix for startup sidkit
+	sudo -u git -H bundle exec rake sidekiq:start RAILS_ENV=production
+	
+2.  if you committed but project page 500, gitlab cannot read your commit log, undefined method `split' for nil:NilClass 
 
-		sudo -u git -H bundle exec rake sidekiq:start RAILS_ENV=production
+	sudo vim /home/git/gitlab/vendor/bundle/ruby/1.9/gems/gitlab-grit-2.6.2/lib/grit/commit.rb
+
+at line 141 add .gsub(/^[^0-9a-zA-Z]{1}\[[0-9]{0,2}m/,"")
+
+I have ^[[33m before commit and ^[[m at the end of commit, and it cannot parse this. 
+
+just remove those tag before process commits
+
 
 
 ## Links and sources 
