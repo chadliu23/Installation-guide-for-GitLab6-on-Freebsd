@@ -58,23 +58,20 @@ install using **ports**
 
 		sudo cd /usr/ports/sysutils/logrotate && make install clean
 		
-9.  libxml2
 
-		sudo cd /usr/ports/textproc/libxml2 && make install clean  
-
-10.  docutils
+9.  docutils
 
 		curl -O http://heanet.dl.sourceforge.net/project/docutils/docutils/0.11/docutils-0.11.tar.gz
 		gunzip -c docutils-0.11.tar.gz | tar xopf -
 		cd docutils-0.11
 		sudo python setup.py install
 		
-11. mysql 
+10. mysql 
 
 		sudo cd /usr/ports/databases/mysql55-server && make install clean
 		echo "mysql_enable=YES" >> /etc/rc.conf
 
-12. Ruby
+11. Ruby
 
 		echo DEFAULT_VERSIONS=ruby=1.9 >> /etc/make.conf
 		sudo cd /usr/ports/lang/ruby19 && make install clean
