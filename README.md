@@ -342,9 +342,7 @@ it is your sidkit didn't start up
 	
 2.  if you committed but project page 500, gitlab cannot read your commit log, undefined method `split' for nil:NilClass 
 
-
-		sudo vim /home/git/gitlab/vendor/bundle/ruby/1.9/gems/gitlab-grit-2.6.2/lib/grit/commit.rb
-		#at line 141 add .gsub(/[^0-9a-zA-Z]{1}\[[0-9]{0,2}m/,"")
+	sudo -u git -H git config --global color.ui false
 
 I have ^[[33m before commit and ^[[m at the end of commit, and it cannot parse this. 
 
