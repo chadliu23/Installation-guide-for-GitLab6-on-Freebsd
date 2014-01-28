@@ -195,9 +195,9 @@ Create public/uploads directory otherwise backup will fail
 
 Fix
 
-	sudo chown -R git:git /Users/git/repositories/
-	sudo chmod -R ug+rwX,o-rwx /Users/git/repositories/
-	sudo chmod -R ug-s /Users/git/repositories/
+	sudo chown -R git:git /home/git/repositories/
+	sudo chmod -R ug+rwX,o-rwx /home/git/repositories/
+	sudo chmod -R ug-s /home/git/repositories/
 	sudo find /home/git/repositories/ -type d -print0 | sudo xargs -0 chmod g+s
 
 Copy the example Unicorn config
