@@ -149,7 +149,7 @@ if you see **'mysql>'**  you are success database setting, quit with `\q`
 
 #### Download Gitlab
 
-	cd /Users/git
+	cd /home/git
 	sudo -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
 	cd gitlab
 	sudo -u git git checkout 6-3-stable
@@ -205,7 +205,7 @@ Copy the example Unicorn config
 	sudo -u git cp config/unicorn.rb.example config/unicorn.rb
 
 
-Uncomment  `listen "/Users/git/gitlab/tmp/sockets/gitlab.socket", :backlog => 64` in `unicorn.rb`.
+Uncomment  `listen "/home/git/gitlab/tmp/sockets/gitlab.socket", :backlog => 64` in `unicorn.rb`.
 
 Change Listen port (127.0.0.1:8080) to **non-use** port in `unicorn.rb`.
 
@@ -218,7 +218,7 @@ Copy rack attack middleware config
 
 	sudo -u git -H cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
 
-Uncomment `config.middleware.use Rack::Attack` in `/Users/git/gitlab/config/application.rb`
+Uncomment `config.middleware.use Rack::Attack` in `/home/git/gitlab/config/application.rb`
 
 Set up logrotate
 	
@@ -306,7 +306,7 @@ Finally, restart Apache:
 
 Check gitlab-shell
 
-	sudo -u git /Users/git/gitlab-shell/bin/check
+	sudo -u git /home/git/gitlab-shell/bin/check
 
 Double-check environment configuration
 
