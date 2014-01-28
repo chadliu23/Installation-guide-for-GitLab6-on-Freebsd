@@ -32,7 +32,7 @@ install using **ports**
 
 3. devel/icu
 
-		sudo cd /usr/ports/devel/git && make install clean
+		sudo cd /usr/ports/devel/icu && make install clean
 
 4. textproc/libxml2
 
