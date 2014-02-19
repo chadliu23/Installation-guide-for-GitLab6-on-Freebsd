@@ -25,14 +25,14 @@ install using **ports**
        
 2. databases/redis
 
-		sudo cd /usr/ports/devel/git && make install clean
+		sudo cd /usr/ports/databases/redis && make install clean
 		cp /usr/local/etc/redis.conf.sample /usr/local/etc/redis.conf
 		echo "redis_enable="YES"" >> /etc/rc.conf
 		service redis start
 
 3. devel/icu
 
-		sudo cd /usr/ports/devel/git && make install clean
+		sudo cd /usr/ports/devel/icu && make install clean
 
 4. textproc/libxml2
 
