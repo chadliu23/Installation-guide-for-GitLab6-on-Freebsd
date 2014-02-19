@@ -1,8 +1,8 @@
 Installation-guide-for-GitLab6-on-Freebsd
 =========================================
 
-This installation guide was create for and tested on **Freebsd 8.3**. 
-his is **NOT** the official installation guide to set up a production server since upstream doesnt support **FreeBSD**. To set up a **development installation** or for many other installation options please consult [the installation section in the readme](https://github.com/gitlabhq/gitlabhq#installation).
+This installation guide was create for and tested on **Freebsd 8.3** and **FreeNAS 9.1** (Which is based on **FreeBSD 9.1**) in a jail environment. 
+This is **NOT** the official installation guide to set up a production server since upstream doesnt support **FreeBSD**. To set up a **development installation** or for many other installation options please consult [the installation section in the readme](https://github.com/gitlabhq/gitlabhq#installation).
 # Overview
 
 The GitLab installation consists of setting up the following components:
@@ -18,66 +18,21 @@ The GitLab installation consists of setting up the following components:
 # 1. Packages / Dependencies
 
 install using **ports** 
-
-1. devel/git 
-
-		sudo cd /usr/ports/devel/git && make install clean
-       
-2. databases/redis
-
-		sudo cd /usr/ports/databases/redis && make install clean
-		cp /usr/local/etc/redis.conf.sample /usr/local/etc/redis.conf
-		echo "redis_enable="YES"" >> /etc/rc.conf
-		service redis start
-
-3. devel/icu
-
-		sudo cd /usr/ports/devel/icu && make install clean
-
-4. textproc/libxml2
-
-		sudo cd /usr/ports/textproc/libxml2 && make install clean
-
-5. mail/postfix 
-       
-		sudo cd /usr/ports/mail/postfix && make install clean
-
-6. textproc/libxslt
-
-		sudo cd /usr/ports/textproc/libxslt && make install clean
-
-7.  python 
-
-		# Install Python
-		sudo cd /usr/ports/lang/python27 && make install clean
-		
-		# Make sure that Python is 2.5+ (3.x is not supported at the moment)
-		python --version
-
-8.  logrotate
-
-		sudo cd /usr/ports/sysutils/logrotate && make install clean
-		
-
-9.  docutils
-
-		curl -O http://heanet.dl.sourceforge.net/project/docutils/docutils/0.11/docutils-0.11.tar.gz
-		gunzip -c docutils-0.11.tar.gz | tar xopf -
-		cd docutils-0.11
-		sudo python setup.py install
-		
-10. mysql 
-
-		sudo cd /usr/ports/databases/mysql55-server && make install clean
-		echo "mysql_enable=YES" >> /etc/rc.conf
-
-11. Ruby
-
-		echo DEFAULT_VERSIONS=ruby=1.9 >> /etc/make.conf
-		sudo cd /usr/ports/lang/ruby19 && make install clean
-		sudo cd /usr/ports/devel/ruby-gems && make install clean
-		sudo cd /usr/ports/sysutils/rubygem-bundler && make install clean	
-		
+install required packages
+ 
+ |Package|ports install command | pkgng install command |
+ |-------|----------------------|--------|
+ |devel/git| ```sudo cd /usr/ports/devel/git && make install clean``` | ```pkg install devel/git``` |
+ |databases/redis| ```sudo cd /usr/ports/databases/redis && make install clean``` <br/> ```cp /usr/local/etc/redis.conf.sample /usr/local/etc/redis.conf``` <br/> ```echo "redis_enable="YES"" >> /etc/rc.conf``` <br/> ```service redis start```| ```pkg install databases/redis``` <br/> ```cp /usr/local/etc/redis.conf.sample /usr/local/etc/redis.conf``` <br/> ```echo "redis_enable="YES"" >> /etc/rc.conf``` <br/> ```service redis start``` |
+ | devel/icu | ```sudo cd /usr/ports/devel/icu && make install clean``` | ```pkg install devel/icu``` |
+ | textproc/libxml2 | ```sudo cd /usr/ports/textproc/libxml2 && make install clean ``` | ```pkg install textproc/libxml2``` |
+ | mail/postfix | ```sudo cd /usr/ports/mail/postfix && make install clean``` | ```pkg install mail/postfix```|
+ | textproc/libxslt | ```sudo cd /usr/ports/textproc/libxslt && make install clean``` | ```pkg install textproc/libxslt``` |
+ | lang/python27 | ```sudo cd /usr/ports/lang/python27 && make install clean``` <br/> ```# Make sure that Python is 2.5+ (3.x is not supported at the moment)``` </br> ```python --version``` | ```pkg install lang/python27``` <br/> ```# Make sure that Python is 2.5+ (3.x is not supported at the moment)``` </br> ```python --version```  |
+ | sysutils/logrotate | ```sudo cd /usr/ports/sysutils/logrotate && make install clean``` | ```pkg install sysutils/logrotate``` |
+ | docutils | ```curl -O http://heanet.dl.sourceforge.net/project/docutils/docutils/0.11/docutils-0.11.tar.gz``` <br/> <code>gunzip -c docutils-0.11.tar.gz &#124; tar xopf -</code> <br/> ```cd docutils-0.11``` <br/> ```sudo python setup.py install``` | ```pkg install textproc/py-docutils```
+ | databases/mysql55-server | ```sudo cd /usr/ports/databases/mysql55-server && make install clean``` <br/> ```echo "mysql_enable=YES" >> /etc/rc.conf```| ```pkg install databases/mysql55-server``` | 
+ | lang/ruby19 and gems |  ```echo DEFAULT_VERSIONS=ruby=1.9 >> /etc/make.conf``` <br /> ```sudo cd /usr/ports/lang/ruby19 && make install clean``` <br/> ```sudo cd /usr/ports/devel/ruby-gems && make install clean``` <br/> ```sudo cd /usr/ports/sysutils/rubygem-bundler && make install clean``` | ```pkg install lang/ruby19``` <br/> ```#Could not find gems as package for ruby19. Install from ports. If in a jail, you probably need to retreive the ports collection``` <br/> ```portsnap fetch``` <br/> ```portsnap fetch```<br/> ```#Now install```<br/> ```echo DEFAULT_VERSIONS=ruby=1.9 >> /etc/make.conf``` <br/> ```cd /usr/ports/devel/ruby-gems && make install clean``` <br/> ```cd /usr/ports/sysutils/rubygem-bundler && make install clean```	
 
 # 2. System Users
 
