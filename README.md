@@ -104,7 +104,8 @@ with something like 'http://domain.com/'
 edit and make sure that is pointing to **/usr/local/bin/redis-cli**
 
 		sudo -u git -H vim config.yml
-
+		
+Make sure that **repos_path** is not pointing to a symlink. This could be a case if gitlab is running in a jail.
 Do setup
 
 		sudo -u git -H ./bin/install
@@ -163,8 +164,9 @@ if you see **'mysql>'**  you are success database setting, quit with `\q`
 change **/usr/bin/git** => **/usr/local/bin/git**
 
 change **localhost**    => **domain.com**
-	
 
+
+Make sure that **repos_path** is not pointing to a symlink. This could be a case if gitlab is running in a jail.
 Make sure GitLab can write to the `log/` and `tmp/` directories
 
 	sudo chown -R git log/
@@ -348,6 +350,10 @@ I have ^[[33m before commit and ^[[m at the end of commit, and it cannot parse t
 
 just remove those tag before process commits
 
+3. Getting error while pusing to remote
+ 	remote: GitLab: You are not allowed to access master!
+ 	remote: error: hook declined to update refs/heads/master
+This can be a case if **repos_path** points to a symlink. (in gitlab and gitlab-shell config files)
 
 
 ## Links and sources 
