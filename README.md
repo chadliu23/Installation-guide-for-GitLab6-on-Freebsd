@@ -1,6 +1,9 @@
 Installation-guide-for-GitLab6-on-Freebsd
 =========================================
 
+
+[![works badge](https://cdn.rawgit.com/nikku/works-on-my-machine/v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
+
 This installation guide was create for and tested on **Freebsd 8.3**. 
 his is **NOT** the official installation guide to set up a production server since upstream doesnt support **FreeBSD**. To set up a **development installation** or for many other installation options please consult [the installation section in the readme](https://github.com/gitlabhq/gitlabhq#installation).
 # Overview
